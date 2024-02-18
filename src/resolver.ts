@@ -39,7 +39,6 @@ const resolvers: {
 
       }
 
-
       query.text += ` ORDER BY date DESC OFFSET $1 LIMIT $2`; // Sort by date in descending order
 
       const { rows } = await db.query(query);

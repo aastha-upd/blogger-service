@@ -12,6 +12,7 @@ app.use(cors());
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  cache: "bounded",
 });
 
 async function startApolloServer() {

@@ -23,6 +23,7 @@ app.use((0, cors_1.default)());
 const server = new apollo_server_express_1.ApolloServer({
     typeDefs: schema_1.default,
     resolvers: resolver_1.default,
+    cache: "bounded",
 });
 function startApolloServer() {
     return __awaiter(this, void 0, void 0, function* () {
