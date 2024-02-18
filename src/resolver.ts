@@ -43,14 +43,7 @@ const resolvers: {
       query.text += ` ORDER BY date DESC OFFSET $1 LIMIT $2`; // Sort by date in descending order
 
       const { rows } = await db.query(query);
-
-      // Parse date string into the desired format (optional)
-      const formattedRows = rows.map((row: any) => ({
-          ...row,
-          date: format(new Date(row.date), 'yyyy-MM-dd'), // Format date as desired (e.g., 'yyyy-MM-dd')
-      }));
-
-      return formattedRows as BlogPost[];
+      return rows as BlogPost[];
     } catch (error) {
       throw new Error(`Error fetching blogs: ${error}`);
     }
