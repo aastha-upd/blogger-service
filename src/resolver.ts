@@ -1,3 +1,4 @@
+import { format } from 'date-fns'; 
 import { QueryResolvers, MutationResolvers, BlogPost, MutationCreateBlogArgs } from './generated/graphql';
 import db from '../db';
 import { calculateMinRead, generateSlug } from './utils';
@@ -38,12 +39,18 @@ const resolvers: {
 
       }
 
-      query.text += ` ORDER BY date OFFSET $1 LIMIT $2`;
+
+      query.text += ` ORDER BY date DESC OFFSET $1 LIMIT $2`; // Sort by date in descending order
 
       const { rows } = await db.query(query);
 
-      
-      return rows as BlogPost[];
+      // Parse date string into the desired format (optional)
+      const formattedRows = rows.map((row: any) => ({
+          ...row,
+          date: format(new Date(row.date), 'yyyy-MM-dd'), // Format date as desired (e.g., 'yyyy-MM-dd')
+      }));
+
+      return formattedRows as BlogPost[];
     } catch (error) {
       throw new Error(`Error fetching blogs: ${error}`);
     }

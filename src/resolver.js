@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const date_fns_1 = require("date-fns");
 const db_1 = __importDefault(require("../db"));
 const utils_1 = require("./utils");
 const resolvers = {
@@ -41,9 +42,11 @@ const resolvers = {
                     query.text += ` WHERE id = $3`;
                     query.values.push(id);
                 }
-                query.text += ` ORDER BY date OFFSET $1 LIMIT $2`;
+                query.text += ` ORDER BY date DESC OFFSET $1 LIMIT $2`; // Sort by date in descending order
                 const { rows } = yield db_1.default.query(query);
-                return rows;
+                // Parse date string into the desired format (optional)
+                const formattedRows = rows.map((row) => (Object.assign(Object.assign({}, row), { date: (0, date_fns_1.format)(new Date(row.date), 'yyyy-MM-dd') })));
+                return formattedRows;
             }
             catch (error) {
                 throw new Error(`Error fetching blogs: ${error}`);
