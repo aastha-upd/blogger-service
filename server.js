@@ -13,11 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const apollo_server_express_1 = require("apollo-server-express");
 const schema_1 = __importDefault(require("./src/schema"));
 const resolver_1 = __importDefault(require("./src/resolver"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 4000;
+app.use((0, cors_1.default)());
 const server = new apollo_server_express_1.ApolloServer({
     typeDefs: schema_1.default,
     resolvers: resolver_1.default,
